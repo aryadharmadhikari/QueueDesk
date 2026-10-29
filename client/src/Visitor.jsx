@@ -7,7 +7,6 @@ export default function Visitor() {
   const [number, setNumber] = useState(() => localStorage.getItem(storageKey) || '');
   const [ticket, setTicket] = useState(null);
   const [code, setCode] = useState('');
-  const [lookup, setLookup] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -51,36 +50,22 @@ export default function Visitor() {
     }
   }
 
-  async function findTicket(event) {
-    event.preventDefault();
-    setBusy(true);
-    setError('');
-    try {
-      const data = await request(`/tickets/${encodeURIComponent(lookup)}`);
-      rememberTicket(data.number);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setBusy(false);
-    }
-  }
-
   function leaveTicket() {
     localStorage.removeItem(storageKey);
     setNumber('');
     setTicket(null);
     setCode('');
-    setLookup('');
     setError('');
   }
 
   if (number) {
     return (
       <section>
-        <h2>Your ticket</h2>
-        {error && <p className="error" role="alert">{error}</p>}
-        {ticket ? <TicketView ticket={ticket} /> : !error && <p>Loading your ticket...</p>}
-        <button type="button" onClick={leaveTicket}>Back to queue entry</button>
+        {error ? <p className="error" role="alert">Could not update your position. Trying again...</p>
+          : ticket ? <TicketView ticket={ticket} /> : <p>Loading your position...</p>}
+        {(ticket?.status === 'served' || error) && (
+          <button type="button" onClick={leaveTicket}>Back to queue entry</button>
+        )}
       </section>
     );
   }
@@ -96,17 +81,6 @@ export default function Visitor() {
           <button className="primary" disabled={busy}>{busy ? 'Joining...' : 'Join'}</button>
         </div>
       </form>
-      <section>
-        <h2>Find your ticket</h2>
-        <form onSubmit={findTicket}>
-          <label htmlFor="ticket-number">Ticket number</label>
-          <div className="form-row">
-            <input id="ticket-number" value={lookup} onChange={event => setLookup(event.target.value.replace(/\D/g, ''))}
-              inputMode="numeric" pattern="[1-9][0-9]*" required />
-            <button disabled={busy}>Find</button>
-          </div>
-        </form>
-      </section>
       {error && <p className="error" role="alert">{error}</p>}
     </section>
   );
@@ -115,10 +89,10 @@ export default function Visitor() {
 function TicketView({ ticket }) {
   return (
     <div aria-live="polite">
-      <p>Ticket number: <strong>#{ticket.number}</strong></p>
-      {ticket.status === 'waiting' && <p>Position in queue: <strong>{ticket.position}</strong></p>}
-      {ticket.status === 'called' && <p><strong>It's your turn. Please come to the counter.</strong></p>}
-      {ticket.status === 'served' && <p><strong>Thank you. You have been served.</strong></p>}
+      {ticket.status === 'waiting' && <><h2>Your position</h2><p className="position">{ticket.position}</p></>}
+      {ticket.status === 'called' && <><h2>It's your turn</h2><p>Please come to the counter.</p></>}
+      {ticket.status === 'served' && <><h2>Thank you</h2><p>You have been served.</p></>}
+      <p>Ticket #{ticket.number}</p>
     </div>
   );
 }

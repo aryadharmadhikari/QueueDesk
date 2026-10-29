@@ -26,7 +26,7 @@ For a single-server build, run `npm run build` and then `npm start`. Open `http:
 ## Use the queue
 
 1. Open **Your ticket**, enter the shared queue code, and select **Join**.
-2. Keep the ticket number to find the ticket later. The browser also remembers it.
+2. Check your position. The same browser remembers your ticket when you return.
 3. Open **Staff desk** in another tab and select **Call next**.
 4. Select **Mark served** after the visitor is served.
 

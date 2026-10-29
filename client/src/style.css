@@ -32,11 +32,7 @@ main {
   border-radius: 12px;
 }
 
-main section section {
-  margin-top: 32px;
-  padding-top: 28px;
-  border-top: 1px solid #e3e3e6;
-}
+.position { margin: 0; font-size: 40px; font-weight: 600; }
 
 label {
   display: block;
