@@ -53,18 +53,18 @@ export default function Staff() {
       <h3>At the counter</h3>
       {called ? (
         <>
-          <p>Ticket #{String(called.number).padStart(3, '0')}</p>
-          <button disabled={busy} onClick={() => update(`/tickets/${called.number}/serve`)}>Mark served</button>
+          <p>Ticket #{called.number}</p>
+          <button className="primary" disabled={busy} onClick={() => update(`/tickets/${called.number}/serve`)}>Mark served</button>
         </>
       ) : (
         <>
           <p>No ticket is being served.</p>
-          <button disabled={busy || loading || waiting.length === 0} onClick={() => update('/queue/call-next')}>Call next</button>
+          <button className="primary" disabled={busy || loading || waiting.length === 0} onClick={() => update('/queue/call-next')}>Call next</button>
         </>
       )}
-      <h3>Waiting queue ({waiting.length})</h3>
+      <h3>Waiting queue</h3>
       {loading ? <p>Loading queue...</p> : waiting.length === 0 ? <p>No tickets waiting.</p> : (
-        <ol>{waiting.map(ticket => <li key={ticket.number}>Ticket #{String(ticket.number).padStart(3, '0')}</li>)}</ol>
+        <ol>{waiting.map(ticket => <li key={ticket.number}>Ticket #{ticket.number}</li>)}</ol>
       )}
     </section>
   );

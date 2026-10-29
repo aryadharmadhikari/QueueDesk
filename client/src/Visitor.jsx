@@ -77,8 +77,7 @@ export default function Visitor() {
   if (number) {
     return (
       <section>
-        <h2>{ticket?.status === 'served' ? 'Your visit is complete' : 'Your ticket'}</h2>
-        <p>Keep your ticket number to check your status later.</p>
+        <h2>Your ticket</h2>
         {error && <p className="error" role="alert">{error}</p>}
         {ticket ? <TicketView ticket={ticket} /> : !error && <p>Loading your ticket...</p>}
         <button type="button" onClick={leaveTicket}>Back to queue entry</button>
@@ -89,13 +88,12 @@ export default function Visitor() {
   return (
     <section>
       <h2>Join the queue</h2>
-      <p>Enter the code shared at the venue.</p>
       <form onSubmit={join}>
-        <label htmlFor="code">Queue access code</label>
+        <label htmlFor="code">Access code (4 or 6 digits)</label>
         <div className="form-row">
           <input id="code" value={code} onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))}
-            inputMode="numeric" pattern="(?:[0-9]{4}|[0-9]{6})" required placeholder="4- or 6-digit code" autoComplete="off" />
-          <button disabled={busy}>{busy ? 'Joining...' : 'Join queue'}</button>
+            inputMode="numeric" pattern="(?:[0-9]{4}|[0-9]{6})" required autoComplete="off" />
+          <button className="primary" disabled={busy}>{busy ? 'Joining...' : 'Join'}</button>
         </div>
       </form>
       <section>
@@ -104,8 +102,8 @@ export default function Visitor() {
           <label htmlFor="ticket-number">Ticket number</label>
           <div className="form-row">
             <input id="ticket-number" value={lookup} onChange={event => setLookup(event.target.value.replace(/\D/g, ''))}
-              inputMode="numeric" pattern="[1-9][0-9]*" required placeholder="Ticket number" />
-            <button disabled={busy}>Find ticket</button>
+              inputMode="numeric" pattern="[1-9][0-9]*" required />
+            <button disabled={busy}>Find</button>
           </div>
         </form>
       </section>
@@ -117,7 +115,7 @@ export default function Visitor() {
 function TicketView({ ticket }) {
   return (
     <div aria-live="polite">
-      <p>Ticket number: <strong>#{String(ticket.number).padStart(3, '0')}</strong></p>
+      <p>Ticket number: <strong>#{ticket.number}</strong></p>
       {ticket.status === 'waiting' && <p>Position in queue: <strong>{ticket.position}</strong></p>}
       {ticket.status === 'called' && <p><strong>It's your turn. Please come to the counter.</strong></p>}
       {ticket.status === 'served' && <p><strong>Thank you. You have been served.</strong></p>}

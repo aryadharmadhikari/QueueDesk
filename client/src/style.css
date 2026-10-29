@@ -1,27 +1,23 @@
 :root {
-  font-family: Arial, sans-serif;
-  color: #222;
-  background: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1d1d1f;
+  background: #f5f5f7;
 }
 
-body {
-  margin: 0;
-}
+* { box-sizing: border-box; }
+body { margin: 0; }
 
 .app {
-  max-width: 700px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 32px 20px;
 }
 
-header {
-  padding-bottom: 16px;
-  border-bottom: 1px solid #ccc;
-}
-
-h1 { font-size: 26px; }
-h2 { font-size: 21px; }
-h3 { font-size: 17px; }
+header { margin-bottom: 24px; }
+h1 { margin: 0 0 20px; font-size: 26px; }
+h2 { margin: 0 0 20px; font-size: 21px; }
+h3 { margin: 28px 0 12px; font-size: 17px; }
+p { line-height: 1.5; }
 
 nav, .form-row {
   display: flex;
@@ -29,22 +25,57 @@ nav, .form-row {
   gap: 8px;
 }
 
-main, main section section {
-  margin-top: 28px;
+main {
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #e3e3e6;
+  border-radius: 12px;
+}
+
+main section section {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid #e3e3e6;
 }
 
 label {
   display: block;
   margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 input, button {
+  min-height: 44px;
+  padding: 10px 14px;
   font: inherit;
-  padding: 8px 10px;
+  border: 1px solid #c6c6cb;
+  border-radius: 8px;
 }
 
-button { cursor: pointer; }
-button:disabled { cursor: not-allowed; }
-button[aria-pressed='true'] { font-weight: bold; }
+input {
+  flex: 1 1 200px;
+  min-width: 0;
+  background: #fff;
+}
+
+button {
+  color: #1d1d1f;
+  background: #f5f5f7;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { background: #e9e9ed; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+button[aria-pressed='true'] { background: #dedee3; font-weight: 600; }
+button.primary { color: #fff; background: #0066cc; border-color: #0066cc; }
+button.primary:hover:not(:disabled) { background: #0055aa; }
+input:focus-visible, button:focus-visible { outline: 3px solid #83b7ee; outline-offset: 2px; }
 li { margin-bottom: 8px; }
-.error { color: #a32121; }
+.error { color: #b42318; }
+
+@media (max-width: 480px) {
+  .app { padding: 24px 16px; }
+  main { padding: 22px; }
+  .form-row input { flex-basis: 100%; }
+}
