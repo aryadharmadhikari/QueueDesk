@@ -76,60 +76,51 @@ export default function Visitor() {
 
   if (number) {
     return (
-      <section className="content ticket-page">
-        <p className="eyebrow"><span className="dot" /> Your place in line</p>
-        <h1>{ticket?.status === 'served' ? 'Your visit is complete.' : "You're in the queue."}</h1>
-        <p className="intro">{ticket?.status === 'served' ? 'Your ticket has been marked as served.' : 'Keep this page open or return later to check your status.'}</p>
-        {error && <p className="notice error" role="alert">{error}</p>}
-        {ticket ? <TicketView ticket={ticket} /> : !error && <p className="notice">Loading your ticket...</p>}
-        <button className="text-button" onClick={leaveTicket}>Back to queue entry <span aria-hidden="true">→</span></button>
+      <section>
+        <h2>{ticket?.status === 'served' ? 'Your visit is complete' : 'Your ticket'}</h2>
+        <p>Keep your ticket number to check your status later.</p>
+        {error && <p className="error" role="alert">{error}</p>}
+        {ticket ? <TicketView ticket={ticket} /> : !error && <p>Loading your ticket...</p>}
+        <button type="button" onClick={leaveTicket}>Back to queue entry</button>
       </section>
     );
   }
 
   return (
-    <section className="content join-page">
-      <p className="eyebrow"><span className="dot" /> A simpler way to wait</p>
-      <h1>Your time is<br /><em>yours again.</em></h1>
-      <p className="intro">Join the queue, see your place, and come back when you're called.</p>
-      <form className="join-form" onSubmit={join}>
+    <section>
+      <h2>Join the queue</h2>
+      <p>Enter the code shared at the venue.</p>
+      <form onSubmit={join}>
         <label htmlFor="code">Queue access code</label>
-        <p className="field-hint">Enter the 4- or 6-digit code shared at the venue.</p>
         <div className="form-row">
           <input id="code" value={code} onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))}
-            inputMode="numeric" pattern="(?:[0-9]{4}|[0-9]{6})" required placeholder="Enter code" autoComplete="off" />
-          <button className="primary" disabled={busy}>{busy ? 'Joining...' : 'Join queue'} <span aria-hidden="true">→</span></button>
+            inputMode="numeric" pattern="(?:[0-9]{4}|[0-9]{6})" required placeholder="4- or 6-digit code" autoComplete="off" />
+          <button disabled={busy}>{busy ? 'Joining...' : 'Join queue'}</button>
         </div>
       </form>
-      <div className="lookup">
-        <p>Already have a ticket?</p>
-        <form onSubmit={findTicket} className="lookup-form">
-          <label className="sr-only" htmlFor="ticket-number">Ticket number</label>
-          <input id="ticket-number" value={lookup} onChange={event => setLookup(event.target.value.replace(/\D/g, ''))}
-            inputMode="numeric" pattern="[1-9][0-9]*" required placeholder="Ticket number" />
-          <button className="text-button" disabled={busy}>Find ticket <span aria-hidden="true">→</span></button>
+      <section>
+        <h2>Find your ticket</h2>
+        <form onSubmit={findTicket}>
+          <label htmlFor="ticket-number">Ticket number</label>
+          <div className="form-row">
+            <input id="ticket-number" value={lookup} onChange={event => setLookup(event.target.value.replace(/\D/g, ''))}
+              inputMode="numeric" pattern="[1-9][0-9]*" required placeholder="Ticket number" />
+            <button disabled={busy}>Find ticket</button>
+          </div>
         </form>
-      </div>
-      {error && <p className="notice error" role="alert">{error}</p>}
+      </section>
+      {error && <p className="error" role="alert">{error}</p>}
     </section>
   );
 }
 
 function TicketView({ ticket }) {
-  const messages = {
-    waiting: ['Waiting', 'Your position', 'We will update your place as the queue moves.'],
-    called: ['Your turn', "You're up next", 'Please come to the counter now.'],
-    served: ['Served', 'Thank you.', "You've been served. Have a great day."],
-  };
-  const [label, title, description] = messages[ticket.status];
   return (
-    <div className={`ticket ticket-${ticket.status}`} aria-live="polite">
-      <div className="ticket-top"><span>YOUR TICKET</span><span className="status"><span className="dot" />{label}</span></div>
-      <div className="ticket-number">#{String(ticket.number).padStart(3, '0')}</div>
-      <div className="ticket-detail">
-        <div><p className="ticket-label">{title}</p><p className="ticket-description">{description}</p></div>
-        {ticket.status === 'waiting' && <strong className="position">{ticket.position}</strong>}
-      </div>
+    <div aria-live="polite">
+      <p>Ticket number: <strong>#{String(ticket.number).padStart(3, '0')}</strong></p>
+      {ticket.status === 'waiting' && <p>Position in queue: <strong>{ticket.position}</strong></p>}
+      {ticket.status === 'called' && <p><strong>It's your turn. Please come to the counter.</strong></p>}
+      {ticket.status === 'served' && <p><strong>Thank you. You have been served.</strong></p>}
     </div>
   );
 }
