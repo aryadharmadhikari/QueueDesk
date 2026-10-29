@@ -1,0 +1,42 @@
+# QueueDesk
+
+QueueDesk is a small virtual queue application. Visitors join a queue with a shared code and track their ticket. Staff call and serve tickets in order.
+
+The project uses React, Node.js, Express, MongoDB, and Mongoose. The pages refresh queue data every five seconds.
+
+## Requirements
+
+- Node.js 20.19 or later
+- MongoDB running locally, or a MongoDB connection string
+
+## Start the project
+
+1. Run `npm install` in the project folder.
+2. Copy `.env.example` to `.env`.
+3. Set `MONGODB_URI` and `QUEUE_CODE` in `.env`. The code must contain 4 or 6 digits.
+4. Start MongoDB.
+5. Run `npm run dev:server` in one terminal.
+6. Run `npm run dev:client` in another terminal.
+7. Open the URL shown by Vite. The default is `http://localhost:5173`.
+
+The Vite development server sends API requests to port 5000. If you change `PORT`, also change the proxy in `client/vite.config.js`.
+
+For a single-server build, run `npm run build` and then `npm start`. Open `http://localhost:5000` or the port in `.env`.
+
+## Use the queue
+
+1. Open **Your ticket**, enter the shared queue code, and select **Join queue**.
+2. Keep the ticket number to find the ticket later. The browser also remembers it.
+3. Open **Staff desk** in another tab and select **Call next**.
+4. Select **Mark served** after the visitor is served.
+
+The staff desk is open to anyone who can access this demo. Add authentication before using it in a public setting.
+
+## Project structure
+
+- `client/src`: React pages, API helper, and styles
+- `server/src/queue.js`: queue API routes
+- `server/src/models.js`: MongoDB ticket and counter models
+- `server/src/server.js`: server setup and database connection
+
+Ticket numbers are assigned in order. A ticket is **waiting**, **called**, or **served**. The server allows only one called ticket at a time.
