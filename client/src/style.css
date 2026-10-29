@@ -19,7 +19,7 @@ h2 { margin: 0 0 20px; font-size: 21px; }
 h3 { margin: 28px 0 12px; font-size: 17px; }
 p { line-height: 1.5; }
 
-nav, .form-row {
+.form-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -63,7 +63,6 @@ button {
 
 button:hover:not(:disabled) { background: #e9e9ed; }
 button:disabled { opacity: .5; cursor: not-allowed; }
-button[aria-pressed='true'] { background: #dedee3; font-weight: 600; }
 button.primary { color: #fff; background: #0066cc; border-color: #0066cc; }
 button.primary:hover:not(:disabled) { background: #0055aa; }
 input:focus-visible, button:focus-visible { outline: 3px solid #83b7ee; outline-offset: 2px; }

@@ -25,9 +25,9 @@ For a single-server build, run `npm run build` and then `npm start`. Open `http:
 
 ## Use the queue
 
-1. Open **Your ticket**, enter the shared queue code, and select **Join**.
+1. Open the app, enter the shared queue code, and select **Join**.
 2. Check your position. The same browser remembers your ticket when you return.
-3. Open **Staff desk** in another tab and select **Call next**.
+3. Open `http://localhost:5173/staff` in another tab and select **Call next**. For a built app, use `/staff` on its server URL.
 4. Select **Mark served** after the visitor is served.
 
 The staff desk is open to anyone who can access this demo. Add authentication before using it in a public setting.
