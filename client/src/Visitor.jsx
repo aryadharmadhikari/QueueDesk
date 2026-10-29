@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { request } from './api.js';
 
 const storageKey = 'queuedesk-ticket';

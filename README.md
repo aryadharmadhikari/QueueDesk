@@ -19,7 +19,7 @@ The project uses React, Node.js, Express, MongoDB, and Mongoose. The pages refre
 6. Run `npm run dev:client` in another terminal.
 7. Open the URL shown by Vite. The default is `http://localhost:5173`.
 
-The Vite development server sends API requests to port 5000. If you change `PORT`, also change the proxy in `client/vite.config.js`.
+The Vite development server sends API requests to the port set in `.env`. Restart Vite after you change `PORT`.
 
 For a single-server build, run `npm run build` and then `npm start`. Open `http://localhost:5000` or the port in `.env`.
 
