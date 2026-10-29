@@ -9,7 +9,7 @@ import { queueRoutes } from './queue.js';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 dotenv.config({ path: path.join(root, '.env') });
 
-const { MONGODB_URI, QUEUE_CODE, PORT = 5000 } = process.env;
+const { MONGODB_URI, QUEUE_CODE, PORT = 5001 } = process.env;
 if (!MONGODB_URI || !/^\d{4}(\d{2})?$/.test(QUEUE_CODE ?? '')) {
   console.error('Set MONGODB_URI and a 4- or 6-digit QUEUE_CODE in .env.');
   process.exit(1);
