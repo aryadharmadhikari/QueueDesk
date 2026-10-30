@@ -43,29 +43,58 @@ export default function Staff() {
     }
   }
 
+  function cancel(number) {
+    if (window.confirm(`Cancel ticket #${number}?`)) update(`/tickets/${number}/cancel`);
+  }
+
   const called = tickets.find(ticket => ticket.status === 'called');
   const waiting = tickets.filter(ticket => ticket.status === 'waiting');
 
   return (
     <section>
-      <h2>Staff desk</h2>
+      <h1>Staff desk</h1>
+      <p className="lead">Call visitors one at a time and mark them as served.</p>
       {error && <p className="error" role="alert">{error}</p>}
-      <h3>At the counter</h3>
-      {called ? (
-        <>
-          <p>Ticket #{called.number}</p>
-          <button className="primary" disabled={busy} onClick={() => update(`/tickets/${called.number}/serve`)}>Mark served</button>
-        </>
-      ) : (
-        <>
-          <p>No ticket is being served.</p>
-          <button className="primary" disabled={busy || loading || waiting.length === 0} onClick={() => update('/queue/call-next')}>Call next</button>
-        </>
-      )}
-      <h3>Waiting queue</h3>
-      {loading ? <p>Loading queue...</p> : waiting.length === 0 ? <p>No tickets waiting.</p> : (
-        <ol>{waiting.map(ticket => <li key={ticket.number}>Ticket #{ticket.number}</li>)}</ol>
-      )}
+
+      <div className="staff-grid">
+        <div className="card counter-card">
+          <div className="card-heading">
+            <h2>At the counter</h2>
+          </div>
+          {called ? (
+            <>
+              <p className="counter-number">#{called.number}</p>
+              <button className="primary" disabled={busy} onClick={() => update(`/tickets/${called.number}/serve`)}>Mark served</button>
+            </>
+          ) : (
+            <>
+              <p className="counter-empty">No one at the counter</p>
+              <button className="primary" disabled={busy || loading || waiting.length === 0} onClick={() => update('/queue/call-next')}>Call next</button>
+            </>
+          )}
+        </div>
+
+        <div className="card">
+          <div className="card-heading">
+            <h2>Waiting</h2>
+            <span className="count">{waiting.length}</span>
+          </div>
+          {loading ? <p className="empty">Loading queue...</p> : waiting.length === 0 ? <p className="empty">No tickets waiting.</p> : (
+            <ol className="queue-list">
+              {waiting.map((ticket, index) => (
+                <li key={ticket.number}>
+                  <span>
+                    Ticket #{ticket.number}
+                    {index === 0 && <span className="tag">Next</span>}
+                  </span>
+                  <button className="cancel" disabled={busy} onClick={() => cancel(ticket.number)}>Cancel</button>
+                </li>
+              ))}
+            </ol>
+          )}
+          <button className="add-ticket" disabled={busy} onClick={() => update('/queue/walk-in')}>+ Add walk-in ticket</button>
+        </div>
+      </div>
     </section>
   );
 }

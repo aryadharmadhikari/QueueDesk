@@ -9,10 +9,17 @@ export function queueRoutes(queueCode) {
       if (typeof req.body?.code !== 'string' || req.body.code !== queueCode) {
         return res.status(400).json({ error: 'Enter the correct queue code.' });
       }
-      const counter = await Counter.findByIdAndUpdate(
-        'tickets', { $inc: { value: 1 } }, { upsert: true, new: true },
-      );
-      const ticket = await Ticket.create({ number: counter.value });
+      const ticket = await createTicket();
+      res.status(201).json({ number: ticket.number });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Staff can add a ticket for a visitor who does not have a phone.
+  router.post('/queue/walk-in', async (_req, res, next) => {
+    try {
+      const ticket = await createTicket();
       res.status(201).json({ number: ticket.number });
     } catch (error) {
       next(error);
@@ -76,7 +83,28 @@ export function queueRoutes(queueCode) {
     }
   });
 
+  router.post('/tickets/:number/cancel', async (req, res, next) => {
+    try {
+      const number = readNumber(req.params.number);
+      if (!number) return res.status(400).json({ error: 'Enter a valid ticket number.' });
+      const ticket = await Ticket.findOneAndUpdate(
+        { number, status: 'waiting' }, { status: 'cancelled' }, { new: true },
+      );
+      if (!ticket) return res.status(409).json({ error: 'Only waiting tickets can be cancelled.' });
+      res.json({ number: ticket.number, status: ticket.status });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   return router;
+}
+
+async function createTicket() {
+  const counter = await Counter.findByIdAndUpdate(
+    'tickets', { $inc: { value: 1 } }, { upsert: true, new: true },
+  );
+  return Ticket.create({ number: counter.value });
 }
 
 function readNumber(value) {

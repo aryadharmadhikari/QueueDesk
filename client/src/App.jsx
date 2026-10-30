@@ -7,12 +7,26 @@ export default function App() {
 
   return (
     <div className="app">
-      <header>
-        <h1>QueueDesk</h1>
+      <header className="site-header">
+        <div className="container">
+          <a className="brand" href="/">
+            <span className="brand-mark">Q</span>
+            QueueDesk
+          </a>
+          <nav>
+            <a href="/" className={isStaff ? '' : 'active'}>Join queue</a>
+            <a href="/staff" className={isStaff ? 'active' : ''}>Staff desk</a>
+          </nav>
+        </div>
       </header>
-      <main>
+
+      <main className={`container ${isStaff ? 'staff' : 'visitor'}`}>
         {isStaff ? <Staff /> : <Visitor />}
       </main>
+
+      <footer className="site-footer container">
+        QueueDesk &middot; The queue updates every 5 seconds
+      </footer>
     </div>
   );
 }

@@ -30,6 +30,8 @@ For a single-server build, run `npm run build` and then `npm start`. Open `http:
 3. Open `http://localhost:5173/staff` in another tab and select **Call next**. For a built app, use `/staff` on its server URL.
 4. Select **Mark served** after the visitor is served.
 
+Staff can select **Add walk-in ticket** to add a visitor who does not have a phone. This is also a quick way to fill the queue during a demo. Select **Cancel** next to a waiting ticket to remove it from the queue.
+
 The staff desk is open to anyone who can access this demo. Add authentication before using it in a public setting.
 
 ## Project structure
@@ -39,4 +41,4 @@ The staff desk is open to anyone who can access this demo. Add authentication be
 - `server/src/models.js`: MongoDB ticket and counter models
 - `server/src/server.js`: server setup and database connection
 
-Ticket numbers are assigned in order. A ticket is **waiting**, **called**, or **served**. The server allows only one called ticket at a time.
+Ticket numbers are assigned in order. A ticket is **waiting**, **called**, **served**, or **cancelled**. The server allows only one called ticket at a time.

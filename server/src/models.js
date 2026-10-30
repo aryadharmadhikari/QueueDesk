@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const ticketSchema = new mongoose.Schema({
   number: { type: Number, required: true, unique: true },
-  status: { type: String, enum: ['waiting', 'called', 'served'], default: 'waiting' },
+  status: { type: String, enum: ['waiting', 'called', 'served', 'cancelled'], default: 'waiting' },
 }, { timestamps: true });
 
 // A single queue can have only one ticket at the counter at a time.
